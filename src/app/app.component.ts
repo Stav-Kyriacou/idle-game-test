@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { provideProtractorTestingSupport } from '@angular/platform-browser';
+import { Component, ViewChild } from '@angular/core';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
+import { Data } from './models/data';
 
 @Component({
   selector: 'app-root',
@@ -7,33 +8,34 @@ import { provideProtractorTestingSupport } from '@angular/platform-browser';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  wood: number = 0;
-  timeLeft: number = 0;
-  interval;
-  timerStarted: boolean;
+  data: Data;
+
+  @ViewChild(ProgressBarComponent) progressBar: ProgressBarComponent; 
+
+  ngOnInit() {
+    this.data = JSON.parse(localStorage.getItem("save"));
+  }
 
   startTimer() {
-    if (this.timerStarted) return;
-
-
-    this.interval = setInterval(() => {
-      this.timerStarted = true;
-      if (this.timeLeft < 100) {
-        this.timeLeft++;
-      } else {
-        this.timeLeft = 0;
-        this.gatherWood();
-      }
-    }, 10)
+    this.progressBar.startTimer();
   }
 
-  pauseTimer() {
-    clearInterval(this.interval);
-    this.timerStarted = false;
-  }
-  gatherWood() {
-    this.wood++;
+  stopTimer() {
+    this.progressBar.stopTimer();
   }
 
+  mineGold() {
+    this.data.gold++;
+    this.save();
+  }
+
+  save() {
+    localStorage.setItem("save", JSON.stringify(this.data));
+  }
+
+  resetSave() {
+    this.data = { level: 1, gold: 0, class: "empty" };
+    this.save();
+  }
 
 }

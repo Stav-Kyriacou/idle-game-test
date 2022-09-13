@@ -1,6 +1,10 @@
 <button (click)='startTimer()'>Start Timer</button>
-<button (click)='pauseTimer()'>Pause</button>
+<button (click)='stopTimer()'>Stop</button>
+<button (click)='save()'>Save</button>
+<button (click)='resetSave()'>Reset Save</button>
 
-<p>{{timeLeft}} Seconds Left....</p>
-<p>Wood: {{wood}}</p>
-<mat-progress-bar mode="determinate" [value]="timeLeft"></mat-progress-bar>
+<p>Gold: {{data.gold}}</p>
+<br>
+<div class="pgb-container">
+    <app-progress-bar [duration]="1" (complete)="mineGold()"></app-progress-bar>
+</div>
